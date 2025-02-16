@@ -14,8 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 public class ClientService {
 
@@ -24,7 +22,7 @@ public class ClientService {
 
     // findByID - busca de recursos por ID
     @Transactional(readOnly = true)
-    public ClientDTO findById(Long id){
+    public ClientDTO findById(Long id) {
         Client client = clientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado!"));
         return new ClientDTO(client);
     }
@@ -62,8 +60,7 @@ public class ClientService {
             throw new ResourceNotFoundException("Recurso não encontrado!");
         try {
             clientRepository.deleteById(id);
-        }
-        catch (DataIntegrityViolationException e) {
+        } catch (DataIntegrityViolationException e) {
             throw new DatabaseException("Falha de integridade referencial");
         }
     }
@@ -75,12 +72,4 @@ public class ClientService {
         entity.setIncome(dto.getIncome());
         entity.setBirthDate(dto.getBirthDate());
     }
-
-
-
-
-
-
-
-
 }

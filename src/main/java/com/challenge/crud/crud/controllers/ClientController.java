@@ -36,7 +36,7 @@ public class ClientController {
     }
 
     @GetMapping
-    public Page<ClientDTO> findAll(Pageable pageable){
+    public Page<ClientDTO> findAll(Pageable pageable) {
         return clientService.findAll(pageable);
     }
 

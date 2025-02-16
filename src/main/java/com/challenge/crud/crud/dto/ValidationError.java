@@ -15,7 +15,7 @@ public class ValidationError extends CustomError {
         return listErros;
     }
 
-    public void addError(String fieldName, String message){
+    public void addError(String fieldName, String message) {
         listErros.add(new FieldMessage(fieldName, message));
     }
 }
