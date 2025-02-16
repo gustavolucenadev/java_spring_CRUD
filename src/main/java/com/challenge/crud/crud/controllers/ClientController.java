@@ -3,6 +3,7 @@ package com.challenge.crud.crud.controllers;
 import com.challenge.crud.crud.dto.ClientDTO;
 import com.challenge.crud.crud.entities.Client;
 import com.challenge.crud.crud.services.ClientService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,5 +39,11 @@ public class ClientController {
     @GetMapping
     public Page<ClientDTO> findAll(Pageable pageable){
         return clientService.findAll(pageable);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ClientDTO> delete(@PathVariable Long id, @RequestBody ClientDTO dto) {
+        dto = clientService.update(id, dto);
+        return ResponseEntity.ok(dto);
     }
 }

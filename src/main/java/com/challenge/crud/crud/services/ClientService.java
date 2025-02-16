@@ -5,6 +5,7 @@ import com.challenge.crud.crud.dto.ClientDTO;
 import com.challenge.crud.crud.entities.Client;
 import com.challenge.crud.crud.repositories.ClientRepository;
 import com.challenge.crud.crud.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,11 +42,20 @@ public class ClientService {
     }
 
     //update
+    public ClientDTO update(Long id, ClientDTO dto) {
+        try {
+            Client entity = clientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado!"));
+            copyDtoToEntity(dto, entity);
+            entity = clientRepository.save(entity);
+            return new ClientDTO(entity);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException("Recurso não encontrado!");
+        }
+    }
 
     // delete
 
     private void copyDtoToEntity(ClientDTO dto, Client entity) {
-        entity.setID(dto.getID());
         entity.setName(dto.getName());
         entity.setCpf(dto.getCpf());
         entity.setChildren(dto.getChildren());
