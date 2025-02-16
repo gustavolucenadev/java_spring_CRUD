@@ -28,7 +28,7 @@ public class ClientController {
     }
 
     @PostMapping
-    public ResponseEntity<ClientDTO> insert(@RequestBody ClientDTO dto) {
+    public ResponseEntity<ClientDTO> insert(@Valid @RequestBody ClientDTO dto) {
         dto = clientService.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("{/id}")
                 .buildAndExpand(dto.getID()).toUri();
@@ -41,7 +41,7 @@ public class ClientController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ClientDTO> update(@PathVariable Long id, @RequestBody ClientDTO dto) {
+    public ResponseEntity<ClientDTO> update(@Valid @PathVariable Long id, @RequestBody ClientDTO dto) {
         dto = clientService.update(id, dto);
         return ResponseEntity.ok(dto);
     }

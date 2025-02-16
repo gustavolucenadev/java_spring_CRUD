@@ -5,14 +5,18 @@ import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PastOrPresent;
 
 import java.time.LocalDate;
 
 public class ClientDTO {
     private Long ID;
+    @NotBlank(message = "Campo requerido!")
     private String name;
     private String cpf;
     private Double income;
+    @PastOrPresent
     private LocalDate birthDate;
     private Integer children;
 

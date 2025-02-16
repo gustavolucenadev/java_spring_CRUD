@@ -4,9 +4,11 @@ package com.challenge.crud.crud.services;
 import com.challenge.crud.crud.dto.ClientDTO;
 import com.challenge.crud.crud.entities.Client;
 import com.challenge.crud.crud.repositories.ClientRepository;
+import com.challenge.crud.crud.services.exceptions.DatabaseException;
 import com.challenge.crud.crud.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -56,9 +58,14 @@ public class ClientService {
 
     // delete
     public void delete(Long id) {
-        Client entity = clientRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("Recurso não encontrado!"));
-        clientRepository.deleteById(id);
+        if (!clientRepository.existsById(id))
+            throw new ResourceNotFoundException("Recurso não encontrado!");
+        try {
+            clientRepository.deleteById(id);
+        }
+        catch (DataIntegrityViolationException e) {
+            throw new DatabaseException("Falha de integridade referencial");
+        }
     }
 
     private void copyDtoToEntity(ClientDTO dto, Client entity) {
