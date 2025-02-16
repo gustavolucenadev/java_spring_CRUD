@@ -22,8 +22,9 @@ public class ClientService {
 
     // findByID - busca de recursos por ID
     @Transactional(readOnly = true)
-    public Client findById(Long id){
-        return clientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado!"));
+    public ClientDTO findById(Long id){
+        Client client = clientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado!"));
+        return new ClientDTO(client);
     }
 
     // findAll - busca paginada
@@ -54,6 +55,11 @@ public class ClientService {
     }
 
     // delete
+    public void delete(Long id) {
+        Client entity = clientRepository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Recurso não encontrado!"));
+        clientRepository.deleteById(id);
+    }
 
     private void copyDtoToEntity(ClientDTO dto, Client entity) {
         entity.setName(dto.getName());
